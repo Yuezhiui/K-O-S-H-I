@@ -1,0 +1,1289 @@
+/* First portfolio page. All selectors are scoped to the existing second panel:
+   the 16-second MP4 loader and its progress/transition styles remain unchanged. */
+.portfolio-first-page {
+  --page-ink: #101010;
+  --page-paper: #ffffff;
+  --line-filter: invert(1);
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  background: var(--page-paper);
+  color: var(--page-ink);
+  scroll-behavior: smooth;
+  transform: none;
+  transition: opacity var(--transition-duration) cubic-bezier(.22, 1, .36, 1);
+}
+
+.portfolio-first-page[data-theme="dark"] {
+  --page-ink: #f6f5f3;
+  --page-paper: #090a0c;
+  --line-filter: none;
+}
+
+body.is-complete .portfolio-first-page {
+  transform: none;
+}
+
+.portfolio-first-page__canvas {
+  width: 100%;
+  min-height: 100%;
+  padding: 0 0 clamp(24px, 4vh, 48px);
+}
+
+.portfolio-intro {
+  position: relative;
+  width: 100%;
+}
+
+.portfolio-intro__hero {
+  position: relative;
+  /* All ornamental, video, portrait and label layers share one stacking root. */
+  isolation: isolate;
+  left: 8px;
+  width: clamp(340px, 48vw, 720px);
+  max-width: calc(100vw - 18px);
+  aspect-ratio: 500 / 380;
+  margin-inline: auto;
+}
+
+.portfolio-intro__header-stage {
+  position: absolute;
+  z-index: 1;
+  top: 7%;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1672 / 941;
+  pointer-events: none;
+}
+
+.portfolio-intro__header-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  isolation: isolate;
+  clip-path: url(#header-inner-clip);
+  -webkit-clip-path: url(#header-inner-clip);
+}
+
+.portfolio-intro__header-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transition: opacity .65s ease;
+  pointer-events: none;
+}
+
+.portfolio-intro__header-video.is-current {
+  opacity: 1;
+}
+
+.portfolio-intro__ornament {
+  position: absolute;
+  display: block;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  filter: var(--line-filter);
+  pointer-events: none;
+}
+
+.portfolio-intro__navigation {
+  position: absolute;
+  top: 13.1%;
+  left: 6%;
+  right: 7%;
+  z-index: 30;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  color: var(--page-ink);
+  font-family: "Fondamento", "Palatino Linotype", "Book Antiqua", serif;
+  font-size: clamp(7.5px, .89vw, 12px);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: .26em;
+  white-space: nowrap;
+}
+
+.portfolio-intro__nav-left {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.6vw, 36px);
+}
+
+.portfolio-intro__navigation a,
+.portfolio-intro__theme {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 3px 0;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.portfolio-intro__navigation a::after,
+.portfolio-intro__theme::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 1px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 180ms ease;
+}
+
+.portfolio-intro__navigation a:hover::after,
+.portfolio-intro__navigation a:focus-visible::after,
+.portfolio-intro__theme:hover::after,
+.portfolio-intro__theme:focus-visible::after {
+  width: 100%;
+}
+
+.portfolio-intro__theme {
+  display: inline-flex;
+  align-items: center;
+}
+
+.portfolio-intro__theme-arrow {
+  margin: 0 .10em;
+  font-size: .9em;
+}
+
+.portfolio-first-page[data-theme="dark"] .portfolio-intro__theme-dark,
+.portfolio-first-page:not([data-theme="dark"]) .portfolio-intro__theme-light {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: .6px;
+}
+
+.portfolio-intro__identity {
+  position: absolute;
+  /* Raise the portrait further up into the header stage matching Figma */
+  top: 50%;
+  left: 5%;
+  width: 73%;
+  height: 40%;
+  z-index: 20;
+  overflow: visible;
+}
+
+.portfolio-intro__portrait {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 42%;
+  aspect-ratio: 1;
+  /* Keep the entire portrait, including its ring, above the header video/border. */
+  z-index: 5;
+  isolation: isolate;
+  transform: translateZ(0);
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.portfolio-intro__flipper {
+  position: absolute;
+  z-index: 1;
+  /* Extends safely under the thick 133px border ring to ensure zero white gap */
+  inset: 9%;
+  width: 82%;
+  height: 82%;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(.4, .2, .2, 1);
+}
+
+.portfolio-intro__portrait:hover .portfolio-intro__flipper,
+.portfolio-intro__portrait.is-flipped .portfolio-intro__flipper {
+  transform: rotateY(180deg);
+}
+
+.portfolio-intro__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  clip-path: circle(48% at center);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.portfolio-intro__photo--front {
+  object-position: center center;
+  transform: rotateY(0deg);
+}
+
+.portfolio-intro__photo--back {
+  object-position: center 20%;
+  transform: rotateY(180deg);
+}
+
+.portfolio-intro__portrait-ring {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: var(--line-filter);
+  pointer-events: none;
+  transform: translateZ(10px);
+}
+
+.portfolio-intro__nameplates {
+  position: absolute;
+  /* Positioned below the header horizontal line, matching Figma */
+  left: 40%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1px, .1w, 8px);
+  z-index: 4;
+}
+
+.portfolio-intro__plate {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  background: transparent;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.portfolio-intro__plate-fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.portfolio-intro__plate-border {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  filter: var(--line-filter);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.portfolio-intro__plate span {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  display: inline-block;
+}
+
+.portfolio-intro__plate--name {
+  width: clamp(230px, 26vw, 310px);
+  height: clamp(38px, 4.3vw, 52px);
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(18px, 2.0vw, 25px);
+  line-height: 1;
+  letter-spacing: -.01em;
+}
+
+.portfolio-intro__plate--name span {
+  transform: translateY(1.5px);
+}
+
+.portfolio-intro__plate--role {
+  width: clamp(185px, 21vw, 255px);
+  height: clamp(26px, 2.9vw, 36px);
+  margin-left: clamp(18px, 2.2vw, 30px);
+  font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(12px, 1.35vw, 17px);
+  letter-spacing: .01em;
+}
+
+.portfolio-intro__role-rotator {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  white-space: nowrap;
+  transform: translateY(clamp(2.5px, 0.4vw, 4px));
+}
+
+.rotating-role__line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  gap: 0.02em;
+}
+
+.rotating-role__character {
+  display: inline-block;
+  color: #ffffff;
+  will-change: transform, opacity, filter;
+  animation: roleCharEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--char-i, 0) * 30ms);
+}
+
+.rotating-role__character.is-exiting {
+  animation: roleCharExit 0.28s ease both;
+  animation-delay: calc(var(--char-i, 0) * 18ms);
+}
+
+@keyframes roleCharEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(5px);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes roleCharExit {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-5px);
+    filter: blur(5px);
+  }
+}
+
+.portfolio-about {
+  width: min(1000px, calc(100% - 48px));
+  margin: 0 auto;
+  position: relative;
+  left: calc(clamp(0px, 2.5vw, 226px) + 6px);
+  color: var(--page-ink);
+}
+
+.portfolio-about h1 {
+  margin: 0 0 8px 40px;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(26px, 2.8vw, 36px);
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.portfolio-about p {
+  margin: 0;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size:  35px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: 0;
+  text-wrap: pretty;
+}
+
+.portfolio-intro__navigation :focus-visible,
+.portfolio-intro__theme:focus-visible {
+  outline: 1px dotted currentColor;
+  outline-offset: 5px;
+}
+
+@media (max-width: 700px) {
+  .portfolio-intro__hero {
+    left: 0;
+    width: min(94vw, 500px);
+    aspect-ratio: 500 / 445;
+  }
+
+  .portfolio-intro__header-stage {
+    top: 9%;
+  }
+
+  .portfolio-intro__navigation {
+    top: 12.5%;
+    left: 6%;
+    right: 6%;
+    font-size: clamp(6.5px, 1.6vw, 9px);
+    letter-spacing: .13em;
+  }
+
+  .portfolio-intro__nav-left {
+    gap: clamp(8px, 2.7vw, 18px);
+  }
+
+  .portfolio-intro__identity {
+    top: 50.5%;
+    left: 1%;
+    width: 88%;
+  }
+
+  .portfolio-intro__portrait {
+    width: 39%;
+  }
+
+  .portfolio-intro__nameplates {
+    left: 35%;
+    top: 48%;
+    width: auto;
+    gap: clamp(3px, 1.0vw, 6px);
+  }
+
+  .portfolio-intro__plate--name {
+    width: clamp(150px, 42vw, 210px);
+    height: clamp(28px, 7.2vw, 38px);
+    font-size: clamp(12px, 3.0vw, 16px);
+  }
+
+  .portfolio-intro__plate--role {
+    width: clamp(120px, 35vw, 175px);
+    height: clamp(22px, 5.8vw, 30px);
+    font-size: clamp(8.5px, 2.1vw, 11px);
+    margin-left: clamp(10px, 2.5vw, 18px);
+  }
+
+  .portfolio-about {
+    left: 0;
+    width: calc(100% - 42px);
+    max-width: 580px;
+  }
+
+  .portfolio-about h1 {
+    margin-left: 12px;
+    font-size: 27px;
+  }
+
+  .portfolio-about p {
+    font-size: clamp(21px, 5.5vw, 26px);
+    line-height: 1.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-first-page,
+  .portfolio-intro__navigation a::after,
+  .portfolio-intro__theme::after {
+    scroll-behavior: auto;
+    transition-duration: 0s;
+  }
+}
+
+/* Work Experience Section */
+.portfolio-experience {
+  width: min(1000px, calc(100% - 48px));
+  margin: clamp(48px, 6vw, 80px) auto 0;
+  position: relative;
+  left: 0;
+  color: var(--page-ink);
+  padding-bottom: 0;
+}
+
+.portfolio-experience__title {
+  margin: 0 0 clamp(24px, 3.2vw, 40px);
+  text-align: center;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(38px, 4.4vw, 56px);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.portfolio-experience__list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 4.5vw, 56px);
+}
+
+.portfolio-experience__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.portfolio-experience__company {
+  margin: 0 0 8px;
+  font-family: "Jim Nightshade", "KaiTi", "STKaiti", "SimSun", "Noto Serif SC", cursive, serif;
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #ff0000;
+  text-align: center;
+}
+
+.portfolio-experience__role-bar {
+  width: 100%;
+  border-top: 1px solid var(--page-ink);
+  border-bottom: 1px solid var(--page-ink);
+  padding: 5px 12px;
+  margin: 0 0 clamp(14px, 1.8vw, 22px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.portfolio-experience__role-bar span {
+  font-family: "Jim Nightshade", "Fondamento", cursive;
+  font-size: clamp(18px, 2vw, 24px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: var(--page-ink);
+}
+
+.portfolio-experience__desc {
+  margin: 0;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: 0;
+  text-wrap: pretty;
+  text-align: center;
+  color: var(--page-ink);
+}
+
+@media (max-width: 700px) {
+  .portfolio-experience {
+    left: 0;
+    width: calc(100% - 42px);
+    max-width: 580px;
+    margin-top: 36px;
+    padding-bottom: 0;
+  }
+
+  .portfolio-experience__title {
+    font-size: clamp(28px, 7vw, 40px);
+  }
+
+  .portfolio-experience__company {
+    font-size: clamp(18px, 4.8vw, 24px);
+  }
+
+  .portfolio-experience__role-bar {
+    padding: 4px 8px;
+    margin-bottom: 12px;
+  }
+
+  .portfolio-experience__role-bar span {
+    font-size: clamp(14px, 3.8vw, 18px);
+  }
+
+  .portfolio-experience__desc {
+    font-size: clamp(21px, 5.5vw, 26px);
+    line-height: 1.35;
+  }
+}
+
+/* Projects Section */
+.portfolio-projects {
+  width: min(1000px, calc(100% - 48px));
+  margin: clamp(48px, 6vw, 80px) auto 0;
+  position: relative;
+  left: 0;
+  color: var(--page-ink);
+  padding-bottom: 0;
+}
+
+.portfolio-projects__title {
+  margin: 0 0 clamp(24px, 3.2vw, 40px);
+  text-align: center;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(38px, 4.4vw, 56px);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.portfolio-projects__list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 4.5vw, 56px);
+  align-items: center;
+}
+
+.portfolio-projects__card {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.portfolio-projects__trigger {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.portfolio-projects__trigger:hover,
+.portfolio-projects__trigger:focus-visible {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.portfolio-projects__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 497 / 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.portfolio-projects__border {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  filter: var(--line-filter);
+  pointer-events: none;
+}
+
+.portfolio-projects__placeholder {
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: clamp(24px, 3.2vw, 36px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--page-ink);
+  text-align: center;
+  user-select: none;
+}
+
+.portfolio-projects__name {
+  margin: clamp(12px, 1.6vw, 20px) 0 0;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--page-ink);
+}
+
+.portfolio-projects__footer {
+  margin: clamp(40px, 5vw, 64px) 0 0;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 400;
+  text-align: center;
+  color: var(--page-ink);
+  letter-spacing: 0.03em;
+}
+
+/* Project Detail Modal (Image 5 / Reference Image 2) */
+.project-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--page-paper);
+  color: var(--page-ink);
+  display: flex;
+  flex-direction: column;
+}
+
+.project-modal[hidden] {
+  display: none !important;
+}
+
+.project-modal__scroller {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: clamp(14px, 2.2vh, 28px) clamp(16px, 3.5vw, 48px);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+}
+
+.project-modal__content {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: clamp(36px, 5vh, 64px);
+}
+
+.project-modal__header {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: clamp(8px, 1.4vh, 18px);
+  margin-bottom: clamp(10px, 1.6vh, 20px);
+  min-height: 52px;
+  padding: 0 clamp(80px, 10vw, 140px);
+  box-sizing: border-box;
+}
+
+.project-modal__title {
+  margin: 0;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: clamp(36px, 4.4vw, 58px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  color: var(--page-ink);
+  text-align: center;
+}
+
+.project-modal__close {
+  position: absolute;
+  right: clamp(4px, 1.2vw, 16px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: clamp(22px, 2.4vw, 34px);
+  font-weight: 400;
+  color: var(--page-ink);
+  letter-spacing: 0.05em;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.project-modal__close:hover,
+.project-modal__close:focus-visible {
+  opacity: 0.75;
+  transform: translateY(-50%) scale(1.04);
+}
+
+.project-modal__media-frame {
+  position: relative;
+  width: min(840px, 100%);
+  aspect-ratio: 497 / 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto clamp(12px, 1.6vh, 20px);
+  overflow: hidden;
+}
+
+.project-modal__border {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  filter: var(--line-filter);
+  pointer-events: none;
+}
+
+.project-modal__placeholder {
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--page-ink);
+  text-align: center;
+  user-select: none;
+}
+
+.project-modal__section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: clamp(6px, 1vh, 14px);
+}
+
+.project-modal__section[hidden] {
+  display: none !important;
+}
+
+.project-modal__subtitle {
+  margin: 0 0 clamp(6px, 0.9vh, 12px);
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: clamp(24px, 2.8vw, 36px);
+  font-weight: 400;
+  color: var(--page-ink);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.project-modal__desc {
+  margin: 0 auto;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: 0;
+  text-wrap: pretty;
+  text-align: center;
+  color: var(--page-ink);
+  width: min(840px, 100%);
+}
+
+@media (max-width: 700px) {
+  .portfolio-projects {
+    left: 0;
+    width: calc(100% - 42px);
+    max-width: 580px;
+    margin-top: 36px;
+    padding-bottom: 0;
+  }
+
+  .portfolio-projects__title {
+    font-size: clamp(28px, 7vw, 40px);
+  }
+
+  .portfolio-projects__placeholder {
+    font-size: clamp(20px, 5vw, 26px);
+  }
+
+  .portfolio-projects__name {
+    font-size: clamp(20px, 5.5vw, 28px);
+  }
+
+  .portfolio-projects__footer {
+    font-size: clamp(18px, 4.5vw, 24px);
+  }
+
+  .project-modal__header {
+    padding: 0 60px 0 0;
+    justify-content: flex-start;
+  }
+
+  .project-modal__title {
+    font-size: clamp(24px, 6vw, 34px);
+    text-align: left;
+  }
+
+  .project-modal__close {
+    font-size: clamp(18px, 4.5vw, 24px);
+  }
+
+  .project-modal__desc {
+    font-size: clamp(21px, 5.5vw, 26px);
+    line-height: 1.35;
+  }
+}
+
+/* ==========================================================================
+   Tech Stack & Contacts Sections
+   ========================================================================== */
+
+/* Shared Section Base */
+.portfolio-tech,
+.portfolio-contacts {
+  width: min(1000px, calc(100% - 48px));
+  margin: clamp(48px, 6vw, 80px) auto 0;
+  position: relative;
+  left: 0;
+  color: var(--page-ink);
+}
+
+.portfolio-tech__title,
+.portfolio-contacts__title {
+  margin: 0 0 clamp(24px, 3.2vw, 40px);
+  text-align: center;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(38px, 4.4vw, 56px);
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--page-ink);
+}
+
+/* 1. Tech Stack */
+.portfolio-tech__grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: clamp(10px, 1.4vw, 16px);
+  max-width: 780px;
+  margin: 0 auto;
+  justify-items: center;
+  align-items: center;
+}
+
+.tech-badge {
+  width: 100%;
+  max-width: 76px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.22s cubic-bezier(.22, 1, .36, 1);
+  cursor: default;
+}
+
+.tech-badge:hover {
+  transform: translateY(-4px) scale(1.08);
+}
+
+.tech-badge__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.portfolio-first-page[data-theme="dark"] .tech-badge__img--light,
+.portfolio-first-page:not([data-theme="dark"]) .tech-badge__img--dark {
+  display: none !important;
+}
+
+.portfolio-first-page[data-theme="dark"] .tech-badge__img--dark,
+.portfolio-first-page:not([data-theme="dark"]) .tech-badge__img--light {
+  display: block !important;
+}
+
+/* 2. Contacts & Footer */
+.portfolio-contacts {
+  padding-bottom: clamp(28px, 4vh, 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  left: clamp(-20px, -1.8vw, -14px);
+}
+
+.portfolio-contacts__list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(12px, 1.4vw, 18px);
+  margin: 0 auto;
+}
+
+.portfolio-contacts__badge {
+  width: 76px;
+  max-width: 76px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(.22, 1, .36, 1);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.portfolio-contacts__badge:hover {
+  transform: translateY(-4px) scale(1.08);
+}
+
+.portfolio-contacts__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.portfolio-first-page[data-theme="dark"] .portfolio-contacts__img--light,
+.portfolio-first-page:not([data-theme="dark"]) .portfolio-contacts__img--dark {
+  display: none !important;
+}
+
+.portfolio-first-page[data-theme="dark"] .portfolio-contacts__img--dark,
+.portfolio-first-page:not([data-theme="dark"]) .portfolio-contacts__img--light {
+  display: block !important;
+}
+
+/* Individual Contact Icon Fine-Tuning (Scale & Position) */
+.portfolio-contacts__badge[aria-label="GitHub"] .portfolio-contacts__img {
+  /* Adjust scale (e.g. 1.05 = 5% bigger, 0.95 = 5% smaller) */
+  /* transform: scale(1.0) translate(0px, 0px); */
+    transform: scale(1.05) translate(0px, 0px);
+}
+
+.portfolio-footer {
+  margin-top: clamp(60px, 12vh, 140px);
+  margin-bottom: clamp(16px, 2.5vh, 28px);
+  text-align: center;
+}
+
+.portfolio-footer__credit,
+.portfolio-footer__copyright {
+  margin: 0;
+  font-family: "Fondamento", "Georgia", cursive;
+  font-style: italic;
+  font-size: clamp(14px, 1.4vw, 17px);
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--page-ink);
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 840px) {
+  .portfolio-tech__grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .portfolio-tech,
+  .portfolio-contacts {
+    left: 0;
+    width: calc(100% - 42px);
+    max-width: 580px;
+    margin-top: 36px;
+  }
+
+  .portfolio-contacts {
+    left: clamp(-14px, -2vw, -8px);
+  }
+
+  .portfolio-tech__title,
+  .portfolio-contacts__title {
+    font-size: clamp(28px, 7vw, 40px);
+  }
+
+  .portfolio-tech__grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .portfolio-contacts__list {
+    gap: clamp(10px, 2vw, 14px);
+  }
+
+  .portfolio-contacts__badge {
+    width: clamp(62px, 14vw, 76px);
+  }
+
+  .portfolio-footer {
+    margin-top: clamp(40px, 8vh, 70px);
+  }
+
+  .portfolio-footer__credit,
+  .portfolio-footer__copyright {
+    font-size: clamp(12px, 3.5vw, 15px);
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio-tech__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .portfolio-contacts__list {
+    gap: 10px;
+  }
+  .portfolio-contacts__badge {
+    width: clamp(54px, 16vw, 68px);
+  }
+}
+
+/* ==========================================================================
+   Background Sound Toggle Button (Bottom-Left)
+   ========================================================================== */
+.portfolio-sound-btn {
+  position: fixed;
+  bottom: clamp(18px, 2.8vh, 32px);
+  left: clamp(18px, 2.5vw, 36px);
+  z-index: 99999;
+  background: transparent;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-family: "Jim Nightshade", "Fondamento", "Palatino Linotype", cursive;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  line-height: 1;
+  user-select: none;
+  -webkit-user-select: none;
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.3s ease;
+}
+
+body.is-loading .portfolio-sound-btn,
+body:not(.is-complete) .portfolio-sound-btn {
+  bottom: clamp(34px, 4.2vh, 48px);
+  left: clamp(22px, 3vw, 52px);
+  color: #101010;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+}
+
+body.is-complete .portfolio-sound-btn {
+  color: #101010;
+  text-shadow: none;
+}
+
+body.is-complete[data-theme="dark"] .portfolio-sound-btn {
+  color: #f6f5f3;
+  text-shadow: none;
+}
+
+.portfolio-sound-btn:hover,
+.portfolio-sound-btn:focus-visible {
+  opacity: 0.75;
+  transform: scale(1.05);
+  outline: none;
+}
+
+.portfolio-sound-btn:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 700px) {
+  .portfolio-sound-btn {
+    font-size: clamp(19px, 4.6vw, 24px);
+    bottom: clamp(14px, 2.2vh, 24px);
+    left: clamp(14px, 3vw, 24px);
+    padding: 4px 6px;
+  }
+
+  body.is-loading .portfolio-sound-btn,
+  body:not(.is-complete) .portfolio-sound-btn {
+    bottom: clamp(28px, 3.8vh, 40px);
+    left: clamp(16px, 3vw, 28px);
+  }
+}
+
+/* ==========================================================================
+   Custom User Cursor (from William T)
+   ========================================================================== */
+:root {
+  --cursor-ink: #ffffff;
+  --cursor-paper: #090a0c;
+}
+
+body.is-complete:not([data-theme="dark"]) {
+  --cursor-ink: #101010;
+  --cursor-paper: #ffffff;
+}
+
+body.is-complete[data-theme="dark"],
+body:not(.is-complete) {
+  --cursor-ink: #ffffff;
+  --cursor-paper: #090a0c;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html.custom-cursor,
+  html.custom-cursor * {
+    cursor: none !important;
+  }
+}
+
+.user-cursor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100000;
+  opacity: 0;
+  transition: opacity 140ms ease;
+  will-change: opacity;
+}
+
+.user-cursor__arrow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 31px;
+  height: 31px;
+  transform-origin: 5.5px 3.3px;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.user-cursor__arrow svg {
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.22));
+}
+
+.user-cursor__arrow path {
+  fill: var(--cursor-ink);
+  stroke: rgba(0, 0, 0, 0.2);
+  stroke-width: 0.6px;
+  stroke-linejoin: round;
+}
+
+[data-theme="dark"] .user-cursor__arrow path,
+body:not(.is-complete) .user-cursor__arrow path {
+  stroke: rgba(0, 0, 0, 0.35);
+}
+
+.user-cursor__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--cursor-ink);
+  border-radius: 999px;
+  padding: 5.5px 11px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14), 0 1px 2px rgba(0, 0, 0, 0.08);
+  transform-origin: 0% 50%;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-cursor__label span {
+  color: var(--cursor-paper);
+  font-family: Geist, Inter, system-ui, -apple-system, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.1;
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: 0.1px;
+}
+

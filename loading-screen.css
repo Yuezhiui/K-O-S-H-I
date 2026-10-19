@@ -1,0 +1,161 @@
+:root {
+  --gold: #DA994D;
+  --black-50: rgba(0, 0, 0, 0.5);
+  --progress: 0%;
+  --transition-duration: 900ms;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body.is-loading {
+  cursor: progress;
+}
+
+.panel-stack {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.panel--loader {
+  z-index: 2;
+  overflow: hidden;
+  background: #000;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity var(--transition-duration) cubic-bezier(.22, 1, .36, 1),
+    transform var(--transition-duration) cubic-bezier(.22, 1, .36, 1),
+    visibility var(--transition-duration) step-end;
+}
+
+.portfolio-loader__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #000;
+}
+
+.portfolio-loader__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--black-50);
+  opacity: 0;
+}
+
+.portfolio-loader__progress {
+  position: absolute;
+  left: clamp(22px, 3vw, 52px);
+  bottom: clamp(8px, 1.2vw, 18px);
+  width: clamp(150px, 16vw, 250px);
+  height: 8px;
+  z-index: 3;
+}
+
+.portfolio-loader__track {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--black-50);
+}
+
+.portfolio-loader__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--progress);
+  border-radius: inherit;
+  background: var(--gold);
+  box-shadow: 0 0 14px rgba(218, 153, 77, .28);
+  will-change: width;
+}
+
+.panel--next {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  background: #0b0b0b;
+  opacity: 0;
+  transform: scale(1.025);
+  transition:
+    opacity var(--transition-duration) cubic-bezier(.22, 1, .36, 1),
+    transform var(--transition-duration) cubic-bezier(.22, 1, .36, 1);
+}
+
+.portfolio-panel__content {
+  width: min(900px, calc(100% - 48px));
+}
+
+.portfolio-panel__eyebrow {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: .28em;
+}
+
+.portfolio-panel__content h1 {
+  max-width: 800px;
+  margin: 0;
+  font-size: clamp(48px, 8vw, 112px);
+  line-height: .92;
+  letter-spacing: -.055em;
+}
+
+body.is-complete .panel--loader {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-1.5%);
+}
+
+body.is-complete .panel--next {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Temporary editing mode: open the portfolio immediately. To restore the
+   16-second intro, set data-skip-loader="false" on <html>. */
+html[data-skip-loader="true"] .panel--loader {
+  display: none;
+}
+
+html[data-skip-loader="true"] .panel--next {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-duration: 180ms;
+  }
+}
