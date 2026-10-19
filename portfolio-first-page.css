@@ -1,29 +1,50 @@
-/* First portfolio page. All selectors are scoped to the existing second panel:
-   the 16-second MP4 loader and its progress/transition styles remain unchanged. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #101010;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body[data-theme="dark"] {
+  background: #090a0c;
+  color: #f6f5f3;
+}
+
 .portfolio-first-page {
   --page-ink: #101010;
   --page-paper: #ffffff;
   --line-filter: invert(1);
   display: block;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-gutter: stable;
+  width: 100%;
+  min-height: 100vh;
   background: var(--page-paper);
   color: var(--page-ink);
-  scroll-behavior: smooth;
-  transform: none;
-  transition: opacity var(--transition-duration) cubic-bezier(.22, 1, .36, 1);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .portfolio-first-page[data-theme="dark"] {
   --page-ink: #f6f5f3;
   --page-paper: #090a0c;
   --line-filter: none;
-}
-
-body.is-complete .portfolio-first-page {
-  transform: none;
 }
 
 .portfolio-first-page__canvas {
@@ -1145,25 +1166,13 @@ body.is-complete .portfolio-first-page {
   line-height: 1;
   user-select: none;
   -webkit-user-select: none;
-  color: #ffffff;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  color: #101010;
+  text-shadow: none;
   transition: opacity 0.2s ease, transform 0.2s ease, color 0.3s ease;
 }
 
-body.is-loading .portfolio-sound-btn,
-body:not(.is-complete) .portfolio-sound-btn {
-  bottom: clamp(34px, 4.2vh, 48px);
-  left: clamp(22px, 3vw, 52px);
-  color: #101010;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
-}
-
-body.is-complete .portfolio-sound-btn {
-  color: #101010;
-  text-shadow: none;
-}
-
-body.is-complete[data-theme="dark"] .portfolio-sound-btn {
+[data-theme="dark"] .portfolio-sound-btn,
+body[data-theme="dark"] .portfolio-sound-btn {
   color: #f6f5f3;
   text-shadow: none;
 }
@@ -1186,29 +1195,19 @@ body.is-complete[data-theme="dark"] .portfolio-sound-btn {
     left: clamp(14px, 3vw, 24px);
     padding: 4px 6px;
   }
-
-  body.is-loading .portfolio-sound-btn,
-  body:not(.is-complete) .portfolio-sound-btn {
-    bottom: clamp(28px, 3.8vh, 40px);
-    left: clamp(16px, 3vw, 28px);
-  }
 }
 
 /* ==========================================================================
    Custom User Cursor (from William T)
    ========================================================================== */
-:root {
-  --cursor-ink: #ffffff;
-  --cursor-paper: #090a0c;
-}
-
-body.is-complete:not([data-theme="dark"]) {
+:root,
+body:not([data-theme="dark"]) {
   --cursor-ink: #101010;
   --cursor-paper: #ffffff;
 }
 
-body.is-complete[data-theme="dark"],
-body:not(.is-complete) {
+[data-theme="dark"],
+body[data-theme="dark"] {
   --cursor-ink: #ffffff;
   --cursor-paper: #090a0c;
 }
@@ -1254,8 +1253,7 @@ body:not(.is-complete) {
   stroke-linejoin: round;
 }
 
-[data-theme="dark"] .user-cursor__arrow path,
-body:not(.is-complete) .user-cursor__arrow path {
+[data-theme="dark"] .user-cursor__arrow path {
   stroke: rgba(0, 0, 0, 0.35);
 }
 

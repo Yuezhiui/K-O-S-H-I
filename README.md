@@ -1,10 +1,10 @@
 # Koshi Portfolio
 
-An interactive Japanese-aesthetic portfolio featuring custom ink-stroke video loaders, dark/light theme switching, dynamic role banners, custom katana-cursor interactions, sound playback, and interactive project showcases.
+An interactive Japanese-aesthetic portfolio featuring dynamic header video sequences, dark/light theme switching, dynamic role banners, custom katana-cursor interactions, sound playback, and interactive project showcases.
 
 ## Features
 
-- **Ink-Stroke Video Loader**: Hand-drawn kanji brushstroke animation seamlessly transitioning into the hero showcase.
+- **Dynamic Header Video Sequence**: Hand-drawn kanji brushstroke animations cycling seamlessly inside the hero ornament window.
 - **Dual Theme Support**: Dark & Light mode with custom-designed stone tablet badges, borders, and typography.
 - **Dynamic Role Badge**: Smooth, animated transition cycling through *Software Engineer*, *AI/ML Engineer*, and *Game Developer*.
 - **Interactive Audio**: Immersive background battle music with custom volume control and mute toggle.
@@ -18,7 +18,7 @@ An interactive Japanese-aesthetic portfolio featuring custom ink-stroke video lo
 
 ## Quick Start
 
-Open `index.html` (or `loading-screen.html`) directly in any modern browser, or serve with any static web server:
+Open `index.html` directly in any modern browser, or serve with any static web server:
 
 ```bash
 # Using Python

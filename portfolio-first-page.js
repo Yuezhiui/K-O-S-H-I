@@ -47,7 +47,7 @@
     let failures = 0;
 
     const showNext = async (index) => {
-      if (!document.body.classList.contains("is-complete") || isSwitching) return;
+      if (isSwitching) return;
       isSwitching = true;
       const nextIndex = index % headerVideos.length;
       const next = headerVideos[nextIndex];
@@ -101,21 +101,7 @@
       });
     });
 
-    const startVideosAfterLoader = () => {
-      if (!started && document.body.classList.contains("is-complete")) {
-        started = true;
-        showNext(0);
-      }
-    };
-
-    // The loader keeps its existing 16-second duration and transition logic.
-    // Watching its completed class avoids touching those files or running
-    // the header videos behind the loading screen.
-    new MutationObserver(startVideosAfterLoader).observe(document.body, {
-      attributes: true,
-      attributeFilter: ["class"]
-    });
-    startVideosAfterLoader();
+    showNext(0);
   }
 
   // Project detail modal interaction (Image 5)
@@ -467,7 +453,7 @@
     }
   }
 
-  // The theme applies only to the new page; the video loading screen is never recolored.
+  // Set initial theme
   setTheme("light");
 })();
 

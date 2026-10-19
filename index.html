@@ -1,43 +1,18 @@
 <!doctype html>
-<html lang="en" data-skip-loader="false">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#ffffff" />
   <title>KOSHI &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PORTFOLIO</title>
-  <link rel="preload" as="video" href="./stroke_draw_demo_v3_bigstrokes_16s.mp4" type="video/mp4" />
-  <link rel="stylesheet" href="./loading-screen.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fondamento:ital@0;1&family=Instrument+Serif:ital@0;1&family=Intel+One+Mono:wght@400&family=Jim+Nightshade&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./portfolio-first-page.css" />
 </head>
-<body class="is-loading">
-  <main class="panel-stack">
-    <section id="portfolio-loader" class="panel panel--loader is-active" aria-label="Loading portfolio">
-      <video
-        id="portfolio-loader-video"
-        class="portfolio-loader__video"
-        muted
-        playsinline
-        preload="none"
-        disablepictureinpicture
-      >
-        <source src="./stroke_draw_demo_v3_bigstrokes_16s.mp4" type="video/mp4" />
-      </video>
-
-      <div class="portfolio-loader__shade" aria-hidden="true"></div>
-
-      <div class="portfolio-loader__progress" aria-hidden="true">
-        <span class="portfolio-loader__track">
-          <span class="portfolio-loader__fill"></span>
-        </span>
-      </div>
-    </section>
-
-    <!-- Portfolio first page: appears immediately after the existing 16-second loading video. -->
-    <section id="portfolio-panel" class="panel panel--next portfolio-first-page" data-theme="light" aria-hidden="true" inert>
-      <div class="portfolio-first-page__canvas">
+<body data-theme="light">
+  <main id="portfolio-panel" class="portfolio-first-page" data-theme="light">
+    <div class="portfolio-first-page__canvas">
         <header id="home" class="portfolio-intro" aria-label="Portfolio introduction">
           <div class="portfolio-intro__hero">
             <div class="portfolio-intro__header-stage">
@@ -405,7 +380,6 @@
           </div>
         </div>
       </div>
-    </section>
   </main>
 
   <!-- Background Music & Floating Sound Toggle -->
@@ -434,7 +408,6 @@
     </div>
   </div>
 
-  <script src="./loading-screen.js" defer></script>
   <script src="./portfolio-first-page.js" defer></script>
 </body>
 </html>
